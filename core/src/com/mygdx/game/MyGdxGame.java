@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -41,6 +43,26 @@ public class MyGdxGame extends ApplicationAdapter {
             sn.draw(sr);
         }
         apple.draw(sr);
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
+            for(Snake sn: belochka){
+                sn.pressW();
+            }
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.S)){
+            for(Snake sn: belochka){
+                sn.pressS();
+            }
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.D)){
+            for(Snake sn: belochka){
+                sn.pressD();
+            }
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.A)){
+            for(Snake sn: belochka){
+                sn.pressA();
+            }
+        }
     }
 
     @Override

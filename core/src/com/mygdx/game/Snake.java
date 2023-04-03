@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Snake {
     private int dx, dy;
-    private int x,y;
+    private float x,y;
     private int N_size, n;
     boolean head = false;
     public Snake(int N, int SIZE){
@@ -35,7 +35,7 @@ public class Snake {
         sr.end();
 
     }
-    public int getX() {
+    public float getX() {
         return x;
     }
     public void setPosition(){
@@ -47,7 +47,7 @@ public class Snake {
         this.y = ny;
     }
 
-        public int getY(){
+        public float getY(){
             return y;
         }
 
@@ -57,5 +57,29 @@ public class Snake {
 
     public int getDy(){
         return dy;
+    }
+
+    public void pressW() {
+        this.dx = 0;
+        this.dy = 1;
+        setPosition();
+    }
+
+    public void pressS() {
+        this.dx = 0;
+        this.dy = -1;
+        setPosition();
+    }
+
+    public void pressD() {
+        this.dx = 1;
+        this.dy = 0;
+        setPosition();
+    }
+
+    public void pressA() {
+        this.dx = -1;
+        this.dy = 0;
+        setPosition();
     }
 }
