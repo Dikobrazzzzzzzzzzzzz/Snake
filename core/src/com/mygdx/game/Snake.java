@@ -42,7 +42,7 @@ public class Snake {
         this.x += dx;
         this.y += dy;
     }
-    public void setPosition(int nx, int ny){
+    public void setPosition(float nx, float ny){
         this.x = nx;
         this.y = ny;
     }
@@ -81,5 +81,13 @@ public class Snake {
         this.dx = -1;
         this.dy = 0;
         setPosition();
+    }
+
+    public void setDx(int dx) {
+        this.dx = dx;
+    }
+
+    public void setDy(int dy) {
+        this.dy = dy;
     }
 }
