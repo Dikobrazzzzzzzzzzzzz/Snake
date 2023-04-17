@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyGdxGame extends ApplicationAdapter {
     public static final int SIZE = 800;
@@ -34,6 +36,55 @@ public class MyGdxGame extends ApplicationAdapter {
         belochka.addFirst(snake);
     }
 
+    public void update(ArrayDeque<Snake> belochk, Snake zmeya) {
+        ArrayDeque<Snake> belochka_copy = new ArrayDeque<>(belochk);
+        belochka_copy.addFirst(zmeya);
+        List<Snake> list = new ArrayList<>(belochka_copy);
+        int i = 0;
+        float x = zmeya.getX();
+        float y = zmeya.getY();
+        int dx = zmeya.getDx();
+        int dy = zmeya.getDy();
+        int x_N = 0;
+        int y_N = 0;
+        if (y <= 0) {
+            y_N = 2;
+        }
+        if (x <= 0){
+            x_N = 2;
+        }
+        if (y >= N-1){
+            y_N = -2;
+        }
+        if (x >= N-1){
+            x_N = -2;
+        }
+
+        float x_new, y_new, dx_new, dy_new;
+        for (Snake sn : belochk) {
+            Snake head = list.get(i);
+            x_new = sn.getX();
+            y_new = sn.getY();
+            dx_new = sn.getDx();
+            dy_new = sn.getDy();
+            sn.setPosition(x, y);
+            sn.setDx(dx);
+            sn.setDy(dy);
+            x = x_new;
+            y = y_new;
+            dx = (int)dx_new;
+            dy = (int)dy_new;
+            i++;
+        }
+        pole(x_N, y_N);
+    }
+
+    private void pole(int x_n, int y_n) {
+        for (Snake sn: belochka){
+            sn.setPosition(sn.getX()+x_n, sn.getY()+y_n);
+        }
+    }
+
     @Override
     public void render() {
         sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -45,31 +96,43 @@ public class MyGdxGame extends ApplicationAdapter {
         }
 
         apple.draw(sr);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-            for (Snake sn : belochka) {
-                sn.pressW();
-            }
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-            for (Snake sn : belochka) {
-                sn.pressS();
-            }
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-            for (Snake sn : belochka) {
-                sn.pressD();
-            }
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            for (Snake sn : belochka) {
-                sn.pressA();
-            }
-        }
-
-
         Snake head = belochka.getFirst();
         float x = head.getX();
         float y = head.getY();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+           //  for (Snake sn : belochka) {
+             //   sn.pressW();
+          //  }
+            Snake zmeya = new Snake(N, SIZE_N);
+            zmeya.setHead(false);
+            zmeya.setPosition(x,y);
+            zmeya.pressW();
+            update (belochka, zmeya);
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+            Snake zmeya = new Snake(N, SIZE_N);
+            zmeya.setHead(false);
+            zmeya.setPosition(x,y);
+            zmeya.pressS();
+            update (belochka, zmeya);
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+            Snake zmeya = new Snake(N, SIZE_N);
+            zmeya.setHead(false);
+            zmeya.setPosition(x,y);
+            zmeya.pressD();
+            update (belochka, zmeya);
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+            Snake zmeya = new Snake(N, SIZE_N);
+            zmeya.setHead(false);
+            zmeya.setPosition(x,y);
+            zmeya.pressA();
+            update (belochka, zmeya);
+        }
+        head = belochka.getFirst();
+        x = head.getX();
+        y = head.getY();
         float xa = apple.getX();
         float ya = apple.getY();
         if (config(x, y, xa, ya)) {
@@ -86,7 +149,6 @@ public class MyGdxGame extends ApplicationAdapter {
             belochka.addLast(zmeya);
         }
     }
-
 
     private boolean config(float x, float y, float xa, float ya) {
         return (int) x == xa && (int) y == ya;
