@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ public class MyGdxGame extends ApplicationAdapter {
     SpriteBatch batch;
     ShapeRenderer sr;
     Texture img;
+    private long timegame;
 
     @Override
     public void create() {
@@ -34,6 +35,7 @@ public class MyGdxGame extends ApplicationAdapter {
         snake = new Snake(N, SIZE_N);
         snake.setHead(true);
         belochka.addFirst(snake);
+        timegame = TimeUtils.millis();
     }
 
     public void update(ArrayDeque<Snake> belochk, Snake zmeya) {
@@ -48,16 +50,16 @@ public class MyGdxGame extends ApplicationAdapter {
         int x_N = 0;
         int y_N = 0;
         if (y <= 0) {
-            y_N = 2;
+            y_N = 1;
         }
         if (x <= 0){
-            x_N = 2;
+            x_N = 1;
         }
         if (y >= N-1){
-            y_N = -2;
+            y_N = -1;
         }
         if (x >= N-1){
-            x_N = -2;
+            x_N = -1;
         }
 
         float x_new, y_new, dx_new, dy_new;
@@ -83,6 +85,8 @@ public class MyGdxGame extends ApplicationAdapter {
         for (Snake sn: belochka){
             sn.setPosition(sn.getX()+x_n, sn.getY()+y_n);
         }
+
+       apple.setPosition(x_n, y_n);
     }
 
     @Override
@@ -95,19 +99,24 @@ public class MyGdxGame extends ApplicationAdapter {
             sn.draw(sr);
         }
 
+        if(TimeUtils.millis() - timegame > 2000/speed){
+            Snake zmeya = belochka.getFirst();
+            zmeya.setPosition(zmeya.getX()+zmeya.getDx(), zmeya.getY()+zmeya.getDy());
+            update(belochka, zmeya);
+            timegame = TimeUtils.millis();
+        }
+
         apple.draw(sr);
         Snake head = belochka.getFirst();
         float x = head.getX();
         float y = head.getY();
         if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-           //  for (Snake sn : belochka) {
-             //   sn.pressW();
-          //  }
             Snake zmeya = new Snake(N, SIZE_N);
             zmeya.setHead(false);
             zmeya.setPosition(x,y);
             zmeya.pressW();
             update (belochka, zmeya);
+            timegame = TimeUtils.millis();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
             Snake zmeya = new Snake(N, SIZE_N);
@@ -115,6 +124,7 @@ public class MyGdxGame extends ApplicationAdapter {
             zmeya.setPosition(x,y);
             zmeya.pressS();
             update (belochka, zmeya);
+            timegame = TimeUtils.millis();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
             Snake zmeya = new Snake(N, SIZE_N);
@@ -122,6 +132,7 @@ public class MyGdxGame extends ApplicationAdapter {
             zmeya.setPosition(x,y);
             zmeya.pressD();
             update (belochka, zmeya);
+            timegame = TimeUtils.millis();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
             Snake zmeya = new Snake(N, SIZE_N);
@@ -129,6 +140,7 @@ public class MyGdxGame extends ApplicationAdapter {
             zmeya.setPosition(x,y);
             zmeya.pressA();
             update (belochka, zmeya);
+            timegame = TimeUtils.millis();
         }
         head = belochka.getFirst();
         x = head.getX();
@@ -162,3 +174,4 @@ public class MyGdxGame extends ApplicationAdapter {
         img.dispose();
     }
 }
+

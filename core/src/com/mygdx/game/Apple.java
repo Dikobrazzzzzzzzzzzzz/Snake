@@ -18,6 +18,12 @@ public class Apple {
         this.y = (int) MathUtils.random(2, n - 2);
     }
 
+    public void setPosition(float nx, float ny) {
+        this.x += nx;
+        this.y += ny;
+    }
+
+
     public void draw(ShapeRenderer sr) {
 
         sr.begin(ShapeRenderer.ShapeType.Filled);
