@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Apple {
-    float x, y, n, size;
+    float x ,y, n, size;
 
     public Apple(int n, int size) {
         this.n = n;

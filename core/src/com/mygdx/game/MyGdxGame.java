@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.TimeUtils;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,8 +88,27 @@ public class MyGdxGame extends ApplicationAdapter {
        apple.setPosition(x_n, y_n);
     }
 
+    public void cordinat(){
+        float zmeyaX = belochka.getFirst().getX();
+        float zmeyaY = belochka.getFirst().getY();
+        for (Snake sn: belochka) {
+            float xa = apple.getX();
+            float ya = apple.getY();
+            float a = sn.getX();
+            float b = sn.getY();
+            if (zmeyaX!= a && zmeyaY!= b){
+                if (xa == a && ya == b){
+                    apple.setPosition(1 , 0);
+
+                }
+            }
+        }
+    }
+
     @Override
     public void render() {
+        cordinat();
+
         sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.setColor(Color.ORANGE);
         sr.rect(0, 0, SIZE, SIZE);
@@ -99,12 +117,12 @@ public class MyGdxGame extends ApplicationAdapter {
             sn.draw(sr);
         }
 
-        if(TimeUtils.millis() - timegame > 2000/speed){
-            Snake zmeya = belochka.getFirst();
-            zmeya.setPosition(zmeya.getX()+zmeya.getDx(), zmeya.getY()+zmeya.getDy());
-            update(belochka, zmeya);
-            timegame = TimeUtils.millis();
-        }
+//       // if(TimeUtils.millis() - timegame > 2000/speed){
+//            Snake zmeya = belochka.getFirst();
+//            zmeya.setPosition(zmeya.getX()+zmeya.getDx(), zmeya.getY()+zmeya.getDy());
+//            update(belochka, zmeya);
+//            timegame = TimeUtils.millis();
+//        }
 
         apple.draw(sr);
         Snake head = belochka.getFirst();
