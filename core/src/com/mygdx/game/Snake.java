@@ -8,11 +8,12 @@ public class Snake {
     private int N_size, n;
     boolean head = false;
     public Snake(int N, int SIZE){
+        this.n = N;
         this.x = (int)(n/2);
         this.y = (int)(n/2);
-        this.n = N;
         this.N_size = SIZE;
     }
+
     public void setHead(boolean head){
         this.head = head;
     }
