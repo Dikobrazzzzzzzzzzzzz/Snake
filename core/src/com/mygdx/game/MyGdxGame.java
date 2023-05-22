@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,53 +13,32 @@ import com.badlogic.gdx.utils.TimeUtils;
 import java.util.ArrayDeque;
 import java.util.Objects;
 
-public class MyGdxGame extends ApplicationAdapter {
-    public static final int SIZE = 800;
-    private static final int N = 16;
-    private static final int SIZE_N = SIZE / N;
-    private static final Object SCR_WIDTH = 1;
-    private static final Object SCR_HEIGHT = 2;
+public class MyGdxGame extends ScreenAdapter {
     private int speed;
-    private ArrayDeque<Snake> belochka = new ArrayDeque<Snake>();
-    private Snake snake;
+    private ArrayDeque<Snake> belochka;
     private Apple apple;
     SpriteBatch batch;
     ShapeRenderer sr;
     Texture img;
-    InputKeyboard keyboard;
     long timegame;
     long timeStart;
 
-    ScreenIntro screenIntro;
-    ScreenGame screenGame;
-    ScreenSettings screenSettings;
-    ScreenAbout screenAbout;
+    ScreenGame game;
 
-    @Override
-    public void create() {
-        timeStart = TimeUtils.millis();
-        speed = 1;
-        batch = new SpriteBatch();
-        sr = new ShapeRenderer();
-        apple = new Apple(N, SIZE_N);
-        snake = new Snake(N, SIZE_N);
-        snake.setHead(true);
-        belochka.addFirst(snake);
-
-        timegame = TimeUtils.millis();
-
-        keyboard = new InputKeyboard(SCR_WIDTH, SCR_HEIGHT, 10);
-
-        screenIntro = new ScreenIntro(this);
-        screenGame = new ScreenGame(this);
-        screenSettings = new ScreenSettings(this);
-        screenAbout = new ScreenAbout(this);
-
-        setScreen(screenIntro);
+    public MyGdxGame(ScreenGame game) {
+        this.game = game;
+        apple = game.apple;
+        timeStart = game.timeStart;
+        speed = game.speed;
+        batch = game.batch;
+        sr = game.sr;
+        belochka = new ArrayDeque<>(game.belochka);
+        timegame = game.timegame;
     }
 
-    private void setScreen(ScreenIntro screenIntro) {
-    }
+
+
+
 
     public void update(float x, float y, int dx, int dy) {
         int x_N = 0;
@@ -69,10 +49,10 @@ public class MyGdxGame extends ApplicationAdapter {
         if (x <= 0){
             x_N = 1;
         }
-        if (y >= N-1){
+        if (y >= game.N-1){
             y_N = -1;
         }
-        if (x >= N-1){
+        if (x >= game.N-1){
             x_N = -1;
         }
 
@@ -123,7 +103,7 @@ public class MyGdxGame extends ApplicationAdapter {
         float x = head.getX();
         float y = head.getY();
         if (Gdx.input.isKeyJustPressed(btn)) {
-            Snake zmeya = new Snake(N, SIZE_N);
+            Snake zmeya = new Snake(game.N, game.SIZE_N);
             zmeya.setHead(false);
             zmeya.setPosition(x, y);
             if (Objects.equals(press, "W")) {
@@ -143,7 +123,7 @@ public class MyGdxGame extends ApplicationAdapter {
         }
 
     @Override
-    public void render() {
+    public void render(float delta) {
         cordinat();
         draw();
 
@@ -178,7 +158,7 @@ public class MyGdxGame extends ApplicationAdapter {
             Snake last = belochka.getLast();
             float last_x = last.getX() - last.getDx();
             float last_y = last.getY() - last.getDy();
-            Snake zmeya = new Snake(N, SIZE_N);
+            Snake zmeya = new Snake(game.N, game.SIZE_N);
             zmeya.setHead(false);
             zmeya.setPosition(last_x, last_y);
             zmeya.setDx(last.getDx());
@@ -190,7 +170,7 @@ public class MyGdxGame extends ApplicationAdapter {
     private void draw() {
         sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.setColor(Color.ORANGE);
-        sr.rect(0, 0, SIZE, SIZE);
+        sr.rect(0, 0, game.SIZE, game.SIZE);
         sr.end();
         for (Snake sn : belochka) {
             sn.draw(sr);
@@ -201,7 +181,7 @@ public class MyGdxGame extends ApplicationAdapter {
         BitmapFont text = new BitmapFont();
         text.setColor(Color.BLACK);
         batch.begin();
-        text.draw(batch, time_string(timeCurrent) + " score: " +speed,(N-3)*SIZE_N, (N)*SIZE_N); // время
+        text.draw(batch, time_string(timeCurrent) + " score: " +speed,(game.N-3)*game.SIZE_N, (game.N)*game.SIZE_N); // время
 
         batch.end();
     }
